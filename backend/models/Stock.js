@@ -59,9 +59,9 @@ const stockSchema = new mongoose.Schema({
 });
 
 // Index for efficient queries
-stockSchema.index({ symbol: 1 });
-stockSchema.index({ active: 1 });
-stockSchema.index({ category: 1 });
+// stockSchema.index({ symbol: 1 });
+// stockSchema.index({ active: 1 });
+// stockSchema.index({ category: 1 });
 
 const Stock = mongoose.model("Stock", stockSchema);
 export default Stock;
