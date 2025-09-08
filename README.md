@@ -113,10 +113,16 @@ npm run dev
 ```
 
 ### 4. Default Admin Account
-Create an admin account by registering with:
-- Email: admin@test.com
-- Password: admin123
-- Then manually update the role to 'admin' in the database
+Run the admin creation script to set up the default admin account:
+
+```bash
+# Create admin user in database
+npm run create-admin
+```
+
+This will create:
+- **Admin**: admin@test.com / admin123
+- **Test User**: user@test.com / user123
 
 ## 🔧 API Endpoints
 
