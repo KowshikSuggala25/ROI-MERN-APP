@@ -1,20 +1,20 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
-import AdminRoute from './components/AdminRoute';
-import Layout from './components/Layout';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import UserDashboard from './pages/user/Dashboard';
-import UserStocks from './pages/user/Stocks';
-import UserPayments from './pages/user/Payments';
-import UserWithdraw from './pages/user/Withdraw';
-import AdminDashboard from './pages/admin/Dashboard';
-import AdminStocks from './pages/admin/Stocks';
-import AdminUsers from './pages/admin/Users';
-import AdminPayments from './pages/admin/Payments';
-import AdminWithdrawals from './pages/admin/Withdrawals';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
+import Layout from "./components/Layout";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import UserDashboard from "./pages/user/Dashboard";
+import UserStocks from "./pages/user/Stocks";
+import UserPayments from "./pages/user/Payments";
+import UserWithdraw from "./pages/user/Withdraw";
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminStocks from "./pages/admin/Stocks";
+import AdminUsers from "./pages/admin/Users";
+import AdminPayments from "./pages/admin/Payments";
+import AdminWithdrawals from "./pages/admin/Withdrawals";
 
 function App() {
   return (
@@ -35,7 +35,7 @@ function App() {
                       <Route path="/stocks" element={<UserStocks />} />
                       <Route path="/payments" element={<UserPayments />} />
                       <Route path="/withdraw" element={<UserWithdraw />} />
-                      
+
                       <Route
                         path="/admin"
                         element={

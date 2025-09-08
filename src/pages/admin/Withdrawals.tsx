@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
-import { ArrowDownToLine, Check, X, Calendar } from 'lucide-react';
-import { mockUsers } from '../../data/mockData';
+import React, { useState } from "react";
+import { ArrowDownToLine, Check, X, Calendar } from "lucide-react";
+import { mockUsers } from "../../data/mockData";
+
+type MockUser = {
+  id: string;
+  name: string;
+  email: string;
+  walletBalance: number;
+};
 
 interface WithdrawalRequest {
   id: string;
@@ -8,62 +15,78 @@ interface WithdrawalRequest {
   amount: number;
   accountNumber: string;
   ifscCode: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: "pending" | "approved" | "rejected";
   createdAt: string;
   updatedAt: string;
 }
 
 const mockWithdrawals: WithdrawalRequest[] = [
   {
-    id: '1',
-    userId: '2',
+    id: "1",
+    userId: "2",
     amount: 5000,
-    accountNumber: '1234567890',
-    ifscCode: 'HDFC0001234',
-    status: 'pending',
-    createdAt: '2024-12-22T10:00:00Z',
-    updatedAt: '2024-12-22T10:00:00Z'
+    accountNumber: "1234567890",
+    ifscCode: "HDFC0001234",
+    status: "pending",
+    createdAt: "2024-12-22T10:00:00Z",
+    updatedAt: "2024-12-22T10:00:00Z",
   },
   {
-    id: '2',
-    userId: '3',
+    id: "2",
+    userId: "3",
     amount: 10000,
-    accountNumber: '9876543210',
-    ifscCode: 'ICIC0001234',
-    status: 'approved',
-    createdAt: '2024-12-21T15:30:00Z',
-    updatedAt: '2024-12-22T09:15:00Z'
-  }
+    accountNumber: "9876543210",
+    ifscCode: "ICIC0001234",
+    status: "approved",
+    createdAt: "2024-12-21T15:30:00Z",
+    updatedAt: "2024-12-22T09:15:00Z",
+  },
 ];
 
 const AdminWithdrawals: React.FC = () => {
   const [withdrawals, setWithdrawals] = useState(mockWithdrawals);
 
   const handleApproveWithdrawal = (withdrawalId: string) => {
-    setWithdrawals(withdrawals.map(w => 
-      w.id === withdrawalId 
-        ? { ...w, status: 'approved' as const, updatedAt: new Date().toISOString() }
-        : w
-    ));
-    alert('Withdrawal approved! Amount will be transferred to user\'s account.');
+    setWithdrawals(
+      withdrawals.map((w) =>
+        w.id === withdrawalId
+          ? {
+              ...w,
+              status: "approved" as const,
+              updatedAt: new Date().toISOString(),
+            }
+          : w
+      )
+    );
+    alert("Withdrawal approved! Amount will be transferred to user's account.");
   };
 
   const handleRejectWithdrawal = (withdrawalId: string) => {
-    setWithdrawals(withdrawals.map(w => 
-      w.id === withdrawalId 
-        ? { ...w, status: 'rejected' as const, updatedAt: new Date().toISOString() }
-        : w
-    ));
-    alert('Withdrawal rejected.');
+    setWithdrawals(
+      withdrawals.map((w) =>
+        w.id === withdrawalId
+          ? {
+              ...w,
+              status: "rejected" as const,
+              updatedAt: new Date().toISOString(),
+            }
+          : w
+      )
+    );
+    alert("Withdrawal rejected.");
   };
 
-  const pendingWithdrawals = withdrawals.filter(w => w.status === 'pending');
-  const processedWithdrawals = withdrawals.filter(w => w.status !== 'pending');
+  const pendingWithdrawals = withdrawals.filter((w) => w.status === "pending");
+  const processedWithdrawals = withdrawals.filter(
+    (w) => w.status !== "pending"
+  );
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Withdrawal Management</h1>
+        <h1 className="text-2xl font-bold text-gray-900">
+          Withdrawal Management
+        </h1>
         <div className="text-sm text-gray-500">
           Pending Requests: {pendingWithdrawals.length}
         </div>
@@ -89,33 +112,53 @@ const AdminWithdrawals: React.FC = () => {
               Pending Withdrawal Requests
             </h3>
           </div>
-          
+
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="text-left py-3 px-6 font-medium text-gray-900">User</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-900">Amount</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-900">Account Details</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-900">Requested</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-900">Actions</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-900">
+                  User
+                </th>
+                <th className="text-left py-3 px-6 font-medium text-gray-900">
+                  Amount
+                </th>
+                <th className="text-left py-3 px-6 font-medium text-gray-900">
+                  Account Details
+                </th>
+                <th className="text-left py-3 px-6 font-medium text-gray-900">
+                  Requested
+                </th>
+                <th className="text-left py-3 px-6 font-medium text-gray-900">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
               {pendingWithdrawals.map((withdrawal) => {
-                const user = mockUsers.find(u => u.id === withdrawal.userId);
+                const user: MockUser | undefined = (
+                  mockUsers as MockUser[]
+                ).find((u) => u.id === withdrawal.userId);
                 return (
                   <tr key={withdrawal.id} className="border-b border-gray-100">
                     <td className="py-4 px-6">
                       <div>
-                        <p className="font-medium text-gray-900">{user?.name}</p>
+                        <p className="font-medium text-gray-900">
+                          {user?.name}
+                        </p>
                         <p className="text-sm text-gray-500">{user?.email}</p>
-                        <p className="text-xs text-gray-400">Balance: ₹{user?.walletBalance.toLocaleString()}</p>
+                        <p className="text-xs text-gray-400">
+                          Balance: ₹{user?.walletBalance.toLocaleString()}
+                        </p>
                       </div>
                     </td>
-                    <td className="py-4 px-6 font-medium text-lg">₹{withdrawal.amount.toLocaleString()}</td>
+                    <td className="py-4 px-6 font-medium text-lg">
+                      ₹{withdrawal.amount.toLocaleString()}
+                    </td>
                     <td className="py-4 px-6">
                       <div className="text-sm">
-                        <p className="font-mono">****{withdrawal.accountNumber.slice(-4)}</p>
+                        <p className="font-mono">
+                          ****{withdrawal.accountNumber.slice(-4)}
+                        </p>
                         <p className="text-gray-500">{withdrawal.ifscCode}</p>
                       </div>
                     </td>
@@ -151,22 +194,36 @@ const AdminWithdrawals: React.FC = () => {
       {/* Processed Withdrawals */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">Withdrawal History</h3>
+          <h3 className="text-lg font-semibold text-gray-900">
+            Withdrawal History
+          </h3>
         </div>
-        
+
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr>
-              <th className="text-left py-3 px-6 font-medium text-gray-900">User</th>
-              <th className="text-left py-3 px-6 font-medium text-gray-900">Amount</th>
-              <th className="text-left py-3 px-6 font-medium text-gray-900">Account</th>
-              <th className="text-left py-3 px-6 font-medium text-gray-900">Date</th>
-              <th className="text-left py-3 px-6 font-medium text-gray-900">Status</th>
+              <th className="text-left py-3 px-6 font-medium text-gray-900">
+                User
+              </th>
+              <th className="text-left py-3 px-6 font-medium text-gray-900">
+                Amount
+              </th>
+              <th className="text-left py-3 px-6 font-medium text-gray-900">
+                Account
+              </th>
+              <th className="text-left py-3 px-6 font-medium text-gray-900">
+                Date
+              </th>
+              <th className="text-left py-3 px-6 font-medium text-gray-900">
+                Status
+              </th>
             </tr>
           </thead>
           <tbody>
             {processedWithdrawals.map((withdrawal) => {
-              const user = mockUsers.find(u => u.id === withdrawal.userId);
+              const user: MockUser | undefined = (mockUsers as MockUser[]).find(
+                (u) => u.id === withdrawal.userId
+              );
               return (
                 <tr key={withdrawal.id} className="border-b border-gray-100">
                   <td className="py-4 px-6">
@@ -175,17 +232,23 @@ const AdminWithdrawals: React.FC = () => {
                       <p className="text-sm text-gray-500">{user?.email}</p>
                     </div>
                   </td>
-                  <td className="py-4 px-6 font-medium">₹{withdrawal.amount.toLocaleString()}</td>
-                  <td className="py-4 px-6 font-mono text-sm">****{withdrawal.accountNumber.slice(-4)}</td>
+                  <td className="py-4 px-6 font-medium">
+                    ₹{withdrawal.amount.toLocaleString()}
+                  </td>
+                  <td className="py-4 px-6 font-mono text-sm">
+                    ****{withdrawal.accountNumber.slice(-4)}
+                  </td>
                   <td className="py-4 px-6 text-sm text-gray-500">
                     {new Date(withdrawal.updatedAt).toLocaleDateString()}
                   </td>
                   <td className="py-4 px-6">
-                    <span className={`px-2 py-1 text-xs rounded-full ${
-                      withdrawal.status === 'approved' 
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
-                    }`}>
+                    <span
+                      className={`px-2 py-1 text-xs rounded-full ${
+                        withdrawal.status === "approved"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
                       {withdrawal.status}
                     </span>
                   </td>

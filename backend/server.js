@@ -5,8 +5,6 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 
-// Configure dotenv
-dotenv.config();
 
 // Import routes
 import authRoutes from './routes/auth.js';
@@ -15,16 +13,32 @@ import transactionRoutes from './routes/transactions.js';
 import paymentRoutes from './routes/payments.js';
 import withdrawalRoutes from './routes/withdrawals.js';
 import userRoutes from './routes/users.js';
+// Configure dotenv
+dotenv.config();
 
 const app = express();
 
 // Security middleware
-app.use(helmet());
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-  credentials: true
-}));
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL,  // production
+  "http://localhost:5173"    // dev
+].filter(Boolean); // remove undefined/null
+// CORS config
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.error(`CORS blocked for origin: ${origin}`);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+app.use(helmet());
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -32,7 +46,7 @@ const limiter = rateLimit({
 });
 app.use('/api/auth', rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5 // limit auth attempts
+  max: 50 // limit auth attempts
 }));
 app.use(limiter);
 

@@ -1,19 +1,30 @@
-import React, { useState } from 'react';
-import { Plus, Edit, Trash2, ToggleLeft, ToggleRight } from 'lucide-react';
-import { mockStocks } from '../../data/mockData';
-import AddStockModal from '../../components/AddStockModal';
+import React, { useState } from "react";
+import { Plus, Edit, Trash2, ToggleLeft, ToggleRight } from "lucide-react";
+import { mockStocks } from "../../data/mockData";
+import AddStockModal from "../../components/AddStockModal";
+
+type Stock = {
+  id: string;
+  name: string;
+  symbol: string;
+  price: number;
+  roiPercentage: number;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
 
 const AdminStocks: React.FC = () => {
-  const [stocks, setStocks] = useState(mockStocks);
+  const [stocks, setStocks] = useState<Stock[]>(mockStocks as Stock[]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingStock, setEditingStock] = useState<any>(null);
+  const [editingStock, setEditingStock] = useState<Stock | null>(null);
 
   const handleAddStock = (stockData: any) => {
     const newStock = {
       ...stockData,
       id: Math.random().toString(36).substr(2, 9),
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
     setStocks([...stocks, newStock]);
     setIsModalOpen(false);
@@ -25,27 +36,36 @@ const AdminStocks: React.FC = () => {
   };
 
   const handleUpdateStock = (stockData: any) => {
-    setStocks(stocks.map(s => 
-      s.id === editingStock.id 
-        ? { ...editingStock, ...stockData, updatedAt: new Date().toISOString() }
-        : s
-    ));
+    if (!editingStock) return;
+    setStocks(
+      stocks.map((s) =>
+        s.id === editingStock.id
+          ? {
+              ...editingStock,
+              ...stockData,
+              updatedAt: new Date().toISOString(),
+            }
+          : s
+      )
+    );
     setEditingStock(null);
     setIsModalOpen(false);
   };
 
   const handleDeleteStock = (stockId: string) => {
-    if (window.confirm('Are you sure you want to delete this stock?')) {
-      setStocks(stocks.filter(s => s.id !== stockId));
+    if (window.confirm("Are you sure you want to delete this stock?")) {
+      setStocks(stocks.filter((s) => s.id !== stockId));
     }
   };
 
   const toggleStockStatus = (stockId: string) => {
-    setStocks(stocks.map(s => 
-      s.id === stockId 
-        ? { ...s, active: !s.active, updatedAt: new Date().toISOString() }
-        : s
-    ));
+    setStocks(
+      stocks.map((s) =>
+        s.id === stockId
+          ? { ...s, active: !s.active, updatedAt: new Date().toISOString() }
+          : s
+      )
+    );
   };
 
   return (
@@ -65,12 +85,24 @@ const AdminStocks: React.FC = () => {
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr>
-              <th className="text-left py-3 px-6 font-medium text-gray-900">Stock Name</th>
-              <th className="text-left py-3 px-6 font-medium text-gray-900">Price (₹)</th>
-              <th className="text-left py-3 px-6 font-medium text-gray-900">ROI %</th>
-              <th className="text-left py-3 px-6 font-medium text-gray-900">Status</th>
-              <th className="text-left py-3 px-6 font-medium text-gray-900">Last Updated</th>
-              <th className="text-left py-3 px-6 font-medium text-gray-900">Actions</th>
+              <th className="text-left py-3 px-6 font-medium text-gray-900">
+                Stock Name
+              </th>
+              <th className="text-left py-3 px-6 font-medium text-gray-900">
+                Price (₹)
+              </th>
+              <th className="text-left py-3 px-6 font-medium text-gray-900">
+                ROI %
+              </th>
+              <th className="text-left py-3 px-6 font-medium text-gray-900">
+                Status
+              </th>
+              <th className="text-left py-3 px-6 font-medium text-gray-900">
+                Last Updated
+              </th>
+              <th className="text-left py-3 px-6 font-medium text-gray-900">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -84,10 +116,15 @@ const AdminStocks: React.FC = () => {
                 </td>
                 <td className="py-4 px-6">₹{stock.price.toLocaleString()}</td>
                 <td className="py-4 px-6">
-                  <span className={`font-medium ${
-                    stock.roiPercentage >= 0 ? 'text-green-600' : 'text-red-600'
-                  }`}>
-                    {stock.roiPercentage >= 0 ? '+' : ''}{stock.roiPercentage}%
+                  <span
+                    className={`font-medium ${
+                      stock.roiPercentage >= 0
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {stock.roiPercentage >= 0 ? "+" : ""}
+                    {stock.roiPercentage}%
                   </span>
                 </td>
                 <td className="py-4 px-6">
