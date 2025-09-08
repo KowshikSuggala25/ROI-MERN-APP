@@ -74,14 +74,18 @@ export const login = async (req, res) => {
 
     const { email, password } = req.body;
 
+    console.log('Login attempt for:', email); // Debug log
     // Find user by email
     const user = await User.findOne({ email });
     if (!user || !user.isActive) {
+      console.log('User not found or inactive:', email); // Debug log
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
+    console.log('User found:', user.email, 'Role:', user.role); // Debug log
     // Check password
     const isValidPassword = await user.comparePassword(password);
+    console.log('Password valid:', isValidPassword); // Debug log
     if (!isValidPassword) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
@@ -89,6 +93,7 @@ export const login = async (req, res) => {
     // Generate token
     const token = generateToken(user._id);
 
+    console.log('Login successful for:', user.email); // Debug log
     res.json({
       message: 'Login successful',
       user: {

@@ -11,65 +11,56 @@ import User from '../models/User.js';
 const createAdminUser = async () => {
   try {
     // Connect to MongoDB
-    await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/roi-mern');
+    await mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://localhost:27017/roi-mern');
     console.log('Connected to MongoDB');
 
-    // Check if admin already exists
-    const existingAdmin = await User.findOne({ email: 'admin@test.com' });
-    if (existingAdmin) {
-      console.log('Admin user already exists');
-      
-      // Update existing admin to ensure correct role and password
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash('admin123', salt);
-      
-      existingAdmin.password = hashedPassword;
-      existingAdmin.role = 'admin';
-      existingAdmin.isActive = true;
-      existingAdmin.kycStatus = 'approved';
-      existingAdmin.walletBalance = 100000; // Give admin some balance for testing
-      
-      await existingAdmin.save();
-      console.log('Admin user updated successfully');
-    } else {
-      // Create new admin user
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash('admin123', salt);
+    // Delete existing admin and test users to start fresh
+    await User.deleteMany({ email: { $in: ['admin@test.com', 'user@test.com'] } });
+    console.log('Removed existing admin and test users');
 
-      const adminUser = new User({
-        name: 'System Administrator',
-        email: 'admin@test.com',
-        password: hashedPassword,
-        role: 'admin',
-        walletBalance: 100000,
-        kycStatus: 'approved',
-        isActive: true
-      });
+    // Create admin user with explicit password hashing
+    const adminPassword = 'admin123';
+    const salt = await bcrypt.genSalt(10);
+    const hashedAdminPassword = await bcrypt.hash(adminPassword, salt);
 
-      await adminUser.save();
-      console.log('Admin user created successfully');
-    }
+    const adminUser = new User({
+      name: 'System Administrator',
+      email: 'admin@test.com',
+      password: hashedAdminPassword,
+      role: 'admin',
+      walletBalance: 100000,
+      kycStatus: 'approved',
+      isActive: true
+    });
 
-    // Also create a test user if it doesn't exist
-    const existingUser = await User.findOne({ email: 'user@test.com' });
-    if (!existingUser) {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash('user123', salt);
+    await adminUser.save();
+    console.log('✅ Admin user created successfully');
 
-      const testUser = new User({
-        name: 'Test User',
-        email: 'user@test.com',
-        password: hashedPassword,
-        role: 'user',
-        walletBalance: 10000,
-        kycStatus: 'approved',
-        isActive: true
-      });
+    // Create test user
+    const userPassword = 'user123';
+    const userSalt = await bcrypt.genSalt(10);
+    const hashedUserPassword = await bcrypt.hash(userPassword, userSalt);
 
-      await testUser.save();
-      console.log('Test user created successfully');
-    } else {
-      console.log('Test user already exists');
+    const testUser = new User({
+      name: 'Test User',
+      email: 'user@test.com',
+      password: hashedUserPassword,
+      role: 'user',
+      walletBalance: 10000,
+      kycStatus: 'approved',
+      isActive: true
+    });
+
+    await testUser.save();
+    console.log('✅ Test user created successfully');
+
+    // Verify the admin user can be found and password works
+    const verifyAdmin = await User.findOne({ email: 'admin@test.com' });
+    if (verifyAdmin) {
+      const passwordMatch = await bcrypt.compare('admin123', verifyAdmin.password);
+      console.log('✅ Admin verification:', passwordMatch ? 'Password matches' : '❌ Password does not match');
+      console.log('✅ Admin role:', verifyAdmin.role);
+      console.log('✅ Admin active:', verifyAdmin.isActive);
     }
 
     console.log('\n=== Demo Credentials ===');
@@ -78,7 +69,7 @@ const createAdminUser = async () => {
     console.log('========================\n');
 
   } catch (error) {
-    console.error('Error creating admin user:', error);
+    console.error('❌ Error creating admin user:', error);
   } finally {
     await mongoose.disconnect();
     console.log('Disconnected from MongoDB');

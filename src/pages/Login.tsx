@@ -20,9 +20,12 @@ const Login: React.FC = () => {
     setError('');
     setIsLoading(true);
 
+    console.log('Attempting login with:', { email, password: '***' }); // Debug log
     try {
       await login(email, password);
+      console.log('Login successful'); // Debug log
     } catch (err) {
+      console.error('Login error:', err); // Debug log
       setError('Invalid credentials. Try admin@test.com/admin123 or user@test.com/user123');
     } finally {
       setIsLoading(false);
