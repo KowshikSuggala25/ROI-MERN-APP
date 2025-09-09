@@ -29,9 +29,11 @@ export const register = async (req, res) => {
       return res.status(400).json({ message: 'User already exists with this email' });
     }
 
-    // Role: only accept "user" or "admin"
+    // Role: only accept "user" or "admin", default to "user" if not provided
     const validRoles = ['user', 'admin'];
     const userRole = validRoles.includes(role) ? role : 'user';
+    
+    console.log('Registration attempt:', { email, role: role, assignedRole: userRole }); // Debug log
 
     // Create user
     const user = new User({
@@ -42,6 +44,7 @@ export const register = async (req, res) => {
     });
 
     await user.save();
+    console.log('User created with role:', user.role); // Debug log
 
     // Generate token
     const token = generateToken(user);
