@@ -68,26 +68,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      console.log('AuthContext: Attempting login for:', email); // Debug log
+      console.log("AuthContext: Attempting login for:", email); // Debug log
       const response = await authService.login({ email, password });
-      console.log('AuthContext: Login response:', response); // Debug log
+      console.log("AuthContext: Login response:", response); // Debug log
       const { user: userData, token: userToken } = response;
 
       setUser(userData);
       setToken(userToken);
-<<<<<<< HEAD
       localStorage.setItem("token", userToken);
       localStorage.setItem("user", JSON.stringify(userData));
     } catch (error: any) {
       throw new Error(error.response?.data?.message || "Login failed");
-=======
-      localStorage.setItem('token', userToken);
-      localStorage.setItem('user', JSON.stringify(userData));
-      console.log('AuthContext: Login successful, user set:', userData); // Debug log
-    } catch (error: any) {
-      console.error('AuthContext: Login failed:', error); // Debug log
-      throw new Error(error.response?.data?.message || 'Login failed');
->>>>>>> 464ae8ba7876a0013f32acf1907ac7be9bfe16d4
     } finally {
       setIsLoading(false);
     }

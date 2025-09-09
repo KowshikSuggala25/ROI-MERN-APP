@@ -73,18 +73,9 @@ userSchema.pre('save', async function (next) {
   }
 });
 
-<<<<<<< HEAD
 // 🔑 Compare password
 userSchema.methods.comparePassword = function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
-=======
-// Compare password method
-userSchema.methods.comparePassword = async function(candidatePassword) {
-  console.log('Comparing password for user:', this.email); // Debug log
-  const result = await bcrypt.compare(candidatePassword, this.password);
-  console.log('Password comparison result:', result); // Debug log
-  return result;
->>>>>>> 464ae8ba7876a0013f32acf1907ac7be9bfe16d4
 };
 
 // 🛑 Remove sensitive fields

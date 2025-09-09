@@ -70,25 +70,14 @@ export const login = async (req, res) => {
 
     const { email, password } = req.body;
 
-<<<<<<< HEAD
     // Find user and explicitly include password
     const user = await User.findOne({ email }).select('+password');
-=======
-    console.log('Login attempt for:', email); // Debug log
-    // Find user by email
-    const user = await User.findOne({ email });
->>>>>>> 464ae8ba7876a0013f32acf1907ac7be9bfe16d4
     if (!user || !user.isActive) {
       console.log('User not found or inactive:', email); // Debug log
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-<<<<<<< HEAD
     // Compare password
-=======
-    console.log('User found:', user.email, 'Role:', user.role); // Debug log
-    // Check password
->>>>>>> 464ae8ba7876a0013f32acf1907ac7be9bfe16d4
     const isValidPassword = await user.comparePassword(password);
     console.log('Password valid:', isValidPassword); // Debug log
     if (!isValidPassword) {

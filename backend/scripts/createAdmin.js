@@ -10,7 +10,6 @@ import User from '../models/User.js';
 
 const createAdminUser = async () => {
   try {
-<<<<<<< HEAD
     // Check if MONGODB_URI is configured
     const mongoUri = process.env.MONGODB_URI || process.env.MONGO_URI;
     if (!mongoUri || mongoUri.includes('username:password')) {
@@ -25,10 +24,6 @@ const createAdminUser = async () => {
 
     // Connect to MongoDB
     await mongoose.connect(mongoUri);
-=======
-    // Connect to MongoDB
-    await mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://localhost:27017/roi-mern');
->>>>>>> 464ae8ba7876a0013f32acf1907ac7be9bfe16d4
     console.log('Connected to MongoDB');
 
     // Delete existing admin and test users to start fresh
