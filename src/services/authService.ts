@@ -9,6 +9,7 @@ interface RegisterData {
   name: string;
   email: string;
   password: string;
+  role: 'admin' | 'user'; // ✅ Added role
 }
 
 interface AuthResponse {
@@ -19,22 +20,42 @@ interface AuthResponse {
 
 export const authService = {
   async login(data: LoginData): Promise<AuthResponse> {
-    const response = await api.post('/auth/login', data);
-    return response.data;
+    try {
+      const response = await api.post('/auth/login', data);
+      return response.data;
+    } catch (error: any) {
+      console.error('Login failed:', error.response?.data || error.message);
+      throw error;
+    }
   },
 
   async register(data: RegisterData): Promise<AuthResponse> {
-    const response = await api.post('/auth/register', data);
-    return response.data;
+    try {
+      const response = await api.post('/auth/register', data); // ✅ role will be sent here
+      return response.data;
+    } catch (error: any) {
+      console.error('Registration failed:', error.response?.data || error.message);
+      throw error;
+    }
   },
 
   async getProfile() {
-    const response = await api.get('/auth/profile');
-    return response.data;
+    try {
+      const response = await api.get('/auth/profile');
+      return response.data;
+    } catch (error: any) {
+      console.error('Get profile failed:', error.response?.data || error.message);
+      throw error;
+    }
   },
 
   async updateProfile(data: any) {
-    const response = await api.put('/auth/profile', data);
-    return response.data;
+    try {
+      const response = await api.put('/auth/profile', data);
+      return response.data;
+    } catch (error: any) {
+      console.error('Update profile failed:', error.response?.data || error.message);
+      throw error;
+    }
   }
 };
