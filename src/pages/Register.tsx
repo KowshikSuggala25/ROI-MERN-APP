@@ -5,7 +5,13 @@ import { UserPlus, Eye, EyeOff } from "lucide-react";
 
 const Register: React.FC = () => {
   const { register, user } = useAuth();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    role: "user" | "admin";
+  }>({
     name: "",
     email: "",
     password: "",

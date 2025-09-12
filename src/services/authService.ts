@@ -21,7 +21,7 @@ interface AuthResponse {
 export const authService = {
   async login(data: LoginData): Promise<AuthResponse> {
     try {
-      const response = await api.post('/auth/login', data);
+      const response = await api.post('/auth/login', data); // ✅ no duplicate /api
       return response.data;
     } catch (error: any) {
       console.error('Login failed:', error.response?.data || error.message);
@@ -31,7 +31,7 @@ export const authService = {
 
   async register(data: RegisterData): Promise<AuthResponse> {
     try {
-      const response = await api.post('/auth/register', data); // ✅ role will be sent here
+      const response = await api.post('/auth/register', data); // ✅ no duplicate /api
       return response.data;
     } catch (error: any) {
       console.error('Registration failed:', error.response?.data || error.message);
@@ -41,7 +41,7 @@ export const authService = {
 
   async getProfile() {
     try {
-      const response = await api.get('/auth/profile');
+      const response = await api.get('/auth/profile'); // ✅ clean path
       return response.data;
     } catch (error: any) {
       console.error('Get profile failed:', error.response?.data || error.message);
@@ -51,7 +51,7 @@ export const authService = {
 
   async updateProfile(data: any) {
     try {
-      const response = await api.put('/auth/profile', data);
+      const response = await api.put('/auth/profile', data); // ✅ clean path
       return response.data;
     } catch (error: any) {
       console.error('Update profile failed:', error.response?.data || error.message);
