@@ -5,7 +5,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 console.log('API Base URL:', API_BASE_URL); // Debug log
 
 export const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -14,7 +14,7 @@ export const api = axios.create({
 // Add request interceptor for debugging
 api.interceptors.request.use(
   (config) => {
-    console.log('Making API request to:', config.baseURL + config.url);
+    console.log('Making API request to:', (config.baseURL ?? '') + config.url);
     return config;
   },
   (error) => {
