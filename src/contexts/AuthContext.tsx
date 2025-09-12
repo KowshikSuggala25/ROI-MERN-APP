@@ -73,6 +73,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       console.log("AuthContext: Login response:", response); // Debug log
       const { user: userData, token: userToken } = response;
 
+      console.log("AuthContext: User role from response:", userData.role); // Debug log
       setUser(userData);
       setToken(userToken);
       localStorage.setItem("token", userToken);

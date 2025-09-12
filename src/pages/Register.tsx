@@ -24,9 +24,14 @@ const Register: React.FC = () => {
 
   if (user) {
     // redirect based on role
-    return (
-      <Navigate to={user.role === "admin" ? "/admin" : "/dashboard"} replace />
-    );
+    console.log("Register: User role is:", user.role); // Debug log
+    if (user.role === "admin") {
+      console.log("Register: Redirecting to admin dashboard"); // Debug log
+      return <Navigate to="/admin" replace />;
+    } else {
+      console.log("Register: Redirecting to user dashboard"); // Debug log
+      return <Navigate to="/dashboard" replace />;
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

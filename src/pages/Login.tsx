@@ -12,11 +12,14 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   if (user) {
-    return user.role === "admin" ? (
-      <Navigate to="/admin/dashboard" replace />
-    ) : (
-      <Navigate to="/dashboard" replace />
-    );
+    console.log("Login: User role is:", user.role); // Debug log
+    if (user.role === "admin") {
+      console.log("Login: Redirecting to admin dashboard"); // Debug log
+      return <Navigate to="/admin" replace />;
+    } else {
+      console.log("Login: Redirecting to user dashboard"); // Debug log
+      return <Navigate to="/dashboard" replace />;
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

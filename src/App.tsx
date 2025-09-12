@@ -37,6 +37,14 @@ function App() {
                       <Route path="/withdraw" element={<UserWithdraw />} />
 
                       <Route
+                        path="/admin/dashboard"
+                        element={
+                          <AdminRoute>
+                            <AdminDashboard />
+                          </AdminRoute>
+                        }
+                      />
+                      <Route
                         path="/admin"
                         element={
                           <AdminRoute>

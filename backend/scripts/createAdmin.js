@@ -11,7 +11,7 @@ import User from '../models/User.js';
 const createAdminUser = async () => {
   try {
     // Check if MONGODB_URI is configured
-    const mongoUri = process.env.MONGODB_URI || process.env.MONGO_URI;
+    const mongoUri = process.env.MONGODB_URI;
     if (!mongoUri || mongoUri.includes('username:password')) {
       console.error('❌ MongoDB connection string not configured!');
       console.error('Please set up MongoDB Atlas:');
