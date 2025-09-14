@@ -1,10 +1,12 @@
+
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
-
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Import routes
 import authRoutes from './routes/auth.js';
@@ -57,6 +59,8 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Static files for uploads
 app.use('/uploads', express.static('uploads'));
 
+// (Static serving handled below for dist)
+
 // Database connection
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('MongoDB connected successfully'))
@@ -70,9 +74,19 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/withdrawals', withdrawalRoutes);
 app.use('/api/users', userRoutes);
 
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
+});
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const distPath = path.join(__dirname, '..', 'dist');
+app.use(express.static(distPath));
+// Fallback: serve index.html for non-API routes
+app.get(/^\/(?!api).*/, (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 // Error handling middleware
@@ -82,10 +96,8 @@ app.use((err, req, res, next) => {
 });
 
 
-// Root route for health check or welcome message
-app.get('/', (req, res) => {
-  res.json({ message: 'ROI MERN App Backend is running.' });
-});
+
+// (Root route now handled by static/index.html fallback)
 
 // 404 handler
 app.use('*', (req, res) => {
