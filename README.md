@@ -503,13 +503,12 @@ describe('Authentication Controller', () => {
 **Sai Kowshik Suggala**
 - **Email**: [saikowshiksuggala9390@gmail.com](mailto:saikowshiksuggala9390@gmail.com)
 - **Portfolio**: [https://kowshiksuggala.vercel.app](https://kowshiksuggala.vercel.app)
-- **LinkedIn**: [Connect with me on LinkedIn](https://linkedin.com/in/saikowshiksuggala)
-- **GitHub**: [View my projects on GitHub](https://github.com/saikowshiksuggala)
+- **LinkedIn**: [Connect with me on LinkedIn](https://linkedin.com/in/kowshiksuggala25)
+- **GitHub**: [View my projects on GitHub](https://github.com/KowshikSuggala25)
 
 ### Project Repository
-- **Live Demo**: [ROI Investment Platform](https://roi-investment-platform.onrender.com)
-- **GitHub Repository**: [Source Code](https://github.com/saikowshiksuggala/roi-investment-platform)
-- **API Documentation**: [Postman Collection](https://documenter.getpostman.com/view/roi-investment-api)
+- **Live Demo**: [ROI Investment Platform](https://roi-mern-app-frontend-3a5f.onrender.com/login)
+- **GitHub Repository**: [Source Code](https://github.com/KowshikSuggala25/ROI-MERN-APP)
 
 ### Support & Collaboration
 For technical discussions, collaboration opportunities, or project inquiries, feel free to reach out through any of the above channels. I'm always open to discussing innovative solutions and potential improvements to the platform.
